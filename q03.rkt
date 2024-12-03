@@ -3,7 +3,7 @@
 (require racket/set)
 (require "utils.rkt")
 
-(in-file "in.txt")
+(in-file "in-test.txt")
 
 ;; Part One                
 (define mul-re #rx"mul\\([0-9]+,[0-9]+\\)")
@@ -15,7 +15,7 @@
 
 (define input (foldr string-append "" lines))
 
-(printf "Part one: ~a\n" (sum-line input)#;(sum (map sum-line lines)))
+(printf "Part one: ~a\n" (sum-line input))
 
 ;; Part Two
 
