@@ -3,7 +3,8 @@
 (require racket/set)
 (require "utils.rkt")
 
-(in-file "in.txt")
+(day 2)
+(testing #f)
 
 ;; Part One
 (define (is-safe line p1?)

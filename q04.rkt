@@ -3,7 +3,8 @@
 (require racket/set)
 (require "utils.rkt")
 
-(in-file "in.txt")
+(day 4)
+(testing #f)
 
 ;; Part One
 (define xmas (list #\X #\M #\A #\S))

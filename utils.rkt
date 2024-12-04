@@ -1,8 +1,12 @@
 #lang racket
 
 (require racket/struct)
+(require net/url)
+(require racket/format)
 
-(provide in-file lines chars rows cols
+(require "private.rkt")
+
+(provide in-file lines chars rows cols day testing
          id char-num? 2d-ref 2d-ref-default sub-vec symbol-append
          number->symbol dict-filter dict-append flip-dict
          uniquify-name sum in-bounds
@@ -56,14 +60,49 @@
     (set! unique-number (add1 unique-number))
     (symbol-append x (symbol-append (string->symbol ".") (number->symbol unique-number)))))
 
-;; File utils
-(define lines (sequence->list (in-lines (open-input-file "in.txt"))))
-(define chars (list->vector (map (compose list->vector string->list) lines)))
-(define rows (vector-length chars))
-(define cols (vector-length (vector-ref chars 0)))
+;; Input Api (Thanks calcin)
+(define (make-input-request day)
+  (port->string (get-pure-port (string->url (format "https://adventofcode.com/2024/day/~a/input" day))
+                               (list (format "Cookie: ~a" PRIV_COOKIE)))))
 
-(define (in-file p)
-  (set! lines (sequence->list (in-lines (open-input-file p))))
+(define (pad-day day)
+  (~a day #:min-width 2 #:align 'right #:left-pad-string "0"))
+
+(define (get-input-path day)
+  (format "inputs/in_~a.txt" (pad-day day)))
+
+(define (get-input fname day)
+  (if (file-exists? fname)
+      (file->lines fname)
+      (let ([raw (make-input-request day)])
+        (begin
+          (display-to-file raw fname)
+          (string-split raw "\n")))))
+
+;; File utils
+(define (update-input)
+  (set! lines (get-input input-file day-num))
   (set! chars (list->vector (map (compose list->vector string->list) lines)))
   (set! rows (vector-length chars))
   (set! cols (vector-length (vector-ref chars 0))))
+
+(define day-num 1)
+(define input-file "inputs/in_01.txt")
+
+(define lines #f)
+(define chars #f)
+(define rows  #f)
+(define cols  #f)
+(update-input)
+
+(define (day n)
+  (set! day-num n)
+  (update-input))
+
+(define (testing b)
+  (set! input-file (if b "inputs/in-test.txt" (get-input-path day-num)))
+  (update-input))
+
+(define (in-file p) ;; deprecated
+  (set! input-file (string-append "inputs/" p))
+  (update-input))

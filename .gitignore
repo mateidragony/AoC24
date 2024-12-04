@@ -1,3 +1,5 @@
 *.txt
 test.*
-.session
+inputs
+
+private.rkt

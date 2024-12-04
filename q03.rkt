@@ -3,7 +3,8 @@
 (require racket/set)
 (require "utils.rkt")
 
-(in-file "in-test.txt")
+(day 3)
+(testing #f)
 
 ;; Part One                
 (define mul-re #rx"mul\\([0-9]+,[0-9]+\\)")

@@ -3,7 +3,8 @@
 (require racket/set)
 (require "utils.rkt")
 
-(in-file "in-test.txt")
+(day 1)
+(testing #f)
 
 ;; Part One                
 (define num-cols (for/list ([l lines]) (string-split l)))
