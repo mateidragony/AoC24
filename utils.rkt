@@ -3,9 +3,9 @@
 (require racket/struct)
 
 (provide in-file lines chars rows cols
-         id comp char-num? 2d-ref sub-vec symbol-append
+         id char-num? 2d-ref 2d-ref-default sub-vec symbol-append
          number->symbol dict-filter dict-append flip-dict
-         uniquify-name sum
+         uniquify-name sum in-bounds
          (struct-out point))
 
 ;; General utils
@@ -13,9 +13,11 @@
 
 (define (id x) x)
 (define (sum ls) (foldr + 0 ls))
-(define (comp f g) (λ (x) (f (g x))))
 (define (char-num? c) (char<=? #\0 c #\9))
+(define (in-bounds i j m) (and (0 . <= . i) (i . < . (vector-length m))
+                               (0 . <= . j) (j . < . (vector-length (vector-ref m 0)))))
 (define (2d-ref m i j) (vector-ref (vector-ref m i) j))
+(define (2d-ref-default m i j default) (if (in-bounds i j m) (2d-ref m i j) default))
 (define (sub-vec v si ee) (vector-drop (vector-take v ee) si))
 (define (symbol-append s1 s2) (string->symbol (string-append (symbol->string s1) (symbol->string s2))))
 (define (number->symbol n) (string->symbol (number->string n)))
@@ -54,15 +56,14 @@
     (set! unique-number (add1 unique-number))
     (symbol-append x (symbol-append (string->symbol ".") (number->symbol unique-number)))))
 
-
 ;; File utils
 (define lines (sequence->list (in-lines (open-input-file "in.txt"))))
-(define chars (list->vector (map (comp list->vector string->list) lines)))
+(define chars (list->vector (map (compose list->vector string->list) lines)))
 (define rows (vector-length chars))
 (define cols (vector-length (vector-ref chars 0)))
 
 (define (in-file p)
   (set! lines (sequence->list (in-lines (open-input-file p))))
-  (set! chars (list->vector (map (comp list->vector string->list) lines)))
+  (set! chars (list->vector (map (compose list->vector string->list) lines)))
   (set! rows (vector-length chars))
   (set! cols (vector-length (vector-ref chars 0))))
