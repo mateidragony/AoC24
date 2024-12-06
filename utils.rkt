@@ -9,7 +9,7 @@
 (provide in-file lines chars rows cols day testing
          id char-num? 2d-ref 2d-ref-default sub-vec symbol-append
          number->symbol dict-filter dict-append flip-dict
-         uniquify-name sum in-bounds
+         uniquify-name sum in-bounds 2d-vec-copy 2d-set!
          (struct-out point))
 
 ;; General utils
@@ -22,6 +22,8 @@
                                (0 . <= . j) (j . < . (vector-length (vector-ref m 0)))))
 (define (2d-ref m i j) (vector-ref (vector-ref m i) j))
 (define (2d-ref-default m i j default) (if (in-bounds i j m) (2d-ref m i j) default))
+(define (2d-vec-copy m) (for/vector ([v m]) (vector-copy v)))
+(define (2d-set! m i j v) (vector-set! (vector-ref m i) j v))
 (define (sub-vec v si ee) (vector-drop (vector-take v ee) si))
 (define (symbol-append s1 s2) (string->symbol (string-append (symbol->string s1) (symbol->string s2))))
 (define (number->symbol n) (string->symbol (number->string n)))
