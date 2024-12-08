@@ -7,6 +7,8 @@
 (testing #f)
 
 ;; Part One                
+(for ([line lines]) (printf "~a\n" line))
+
 (printf "Part one: ~a\n" 0)
 
 ;; Part Two
