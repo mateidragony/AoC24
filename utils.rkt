@@ -10,6 +10,7 @@
          id char-num? 2d-ref 2d-ref-default sub-vec symbol-append
          number->symbol dict-filter dict-append flip-dict
          uniquify-name sum in-bounds 2d-vec-copy 2d-set!
+         set-map set-filter set-filter-map set-flatten
          (struct-out point))
 
 ;; General utils
@@ -55,6 +56,13 @@
     [(cons d ds) (dict-append-two d (apply dict-append ds))]))
 (define (flip-dict d empty-dict)
    (foldr (λ (x d) (dict-set d (cdr x) (car x))) empty-dict (dict->list d)))
+
+(define (set-map proc st) (for/set ([x st]) (proc x)))
+(define (set-filter proc st) (for/fold ([fs (set)]) ([x st]) (if (proc x) (set-add fs x) fs)))
+(define (set-filter-map proc st)
+  (for/fold ([fs (set)]) ([x st]) (let ((px (proc x))) (if px (set-add fs px) fs))))
+(define (set-flatten st)
+  (for/fold ([fl (set)]) ([x st]) (set-union fl (if (set? x) (set-flatten x) (set x)))))
 
 (define unique-number 0)
 (define (uniquify-name x)
