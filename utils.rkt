@@ -10,7 +10,8 @@
          id char-num? 2d-ref 2d-ref-default sub-vec symbol-append
          number->symbol dict-filter dict-append flip-dict
          uniquify-name sum in-bounds 2d-vec-copy 2d-set!
-         set-map set-filter set-filter-map set-flatten
+         set-map->set set-filter set-filter-map set-flatten
+         ls-of
          (struct-out point))
 
 ;; General utils
@@ -28,6 +29,7 @@
 (define (sub-vec v si ee) (vector-drop (vector-take v ee) si))
 (define (symbol-append s1 s2) (string->symbol (string-append (symbol->string s1) (symbol->string s2))))
 (define (number->symbol n) (string->symbol (number->string n)))
+(define (ls-of l e) (build-list l (λ (x) e)))
 
 (define (dict-filter p d)
   (cond ((dict-empty? d) d)
@@ -57,7 +59,7 @@
 (define (flip-dict d empty-dict)
    (foldr (λ (x d) (dict-set d (cdr x) (car x))) empty-dict (dict->list d)))
 
-(define (set-map proc st) (for/set ([x st]) (proc x)))
+(define (set-map->set proc st) (for/set ([x st]) (proc x)))
 (define (set-filter proc st) (for/fold ([fs (set)]) ([x st]) (if (proc x) (set-add fs x) fs)))
 (define (set-filter-map proc st)
   (for/fold ([fs (set)]) ([x st]) (let ((px (proc x))) (if px (set-add fs px) fs))))
