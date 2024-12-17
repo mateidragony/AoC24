@@ -6,9 +6,9 @@
 (day 1)
 (testing #f)
 
-;; Part One                
 (for ([line lines]) (printf "~a\n" line))
 
+;; Part One                
 (printf "Part one: ~a\n" 0)
 
 ;; Part Two
