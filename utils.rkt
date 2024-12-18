@@ -22,8 +22,8 @@
 (define (char-num? c) (char<=? #\0 c #\9))
 (define (in-bounds i j m) (and (0 . <= . i) (i . < . (vector-length m))
                                (0 . <= . j) (j . < . (vector-length (vector-ref m 0)))))
-(define (2d-ref m i j) (vector-ref (vector-ref m i) j))
-(define (2d-ref-default m i j default) (if (in-bounds i j m) (2d-ref m i j) default))
+(define (2d-ref m i j [d #f]) (if (in-bounds i j m) (vector-ref (vector-ref m i) j) d))
+(define (2d-ref-default m i j default) (if (in-bounds i j m) (2d-ref m i j) default)) ;; deprecated
 (define (2d-vec-copy m) (for/vector ([v m]) (vector-copy v)))
 (define (2d-set! m i j v) (vector-set! (vector-ref m i) j v))
 (define (sub-vec v si ee) (vector-drop (vector-take v ee) si))
