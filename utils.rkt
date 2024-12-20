@@ -11,7 +11,7 @@
          number->symbol dict-filter dict-append flip-dict
          uniquify-name sum in-bounds 2d-vec-copy 2d-set!
          set-map->set set-filter set-filter-map set-flatten
-         ls-of
+         ls-of b->n
          (struct-out point))
 
 ;; General utils
@@ -71,6 +71,8 @@
   (begin
     (set! unique-number (add1 unique-number))
     (symbol-append x (symbol-append (string->symbol ".") (number->symbol unique-number)))))
+
+(define (b->n b) (if b 1 0))
 
 ;; Input Api (Thanks calcin)
 (define (make-input-request day)
