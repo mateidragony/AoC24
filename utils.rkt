@@ -11,7 +11,7 @@
          number->symbol dict-filter dict-append flip-dict
          uniquify-name sum in-bounds 2d-vec-copy 2d-set!
          set-map->set set-filter set-filter-map set-flatten
-         ls-of b->n
+         ls-of b->n sub-list
          (struct-out point))
 
 ;; General utils
@@ -30,6 +30,7 @@
 (define (symbol-append s1 s2) (string->symbol (string-append (symbol->string s1) (symbol->string s2))))
 (define (number->symbol n) (string->symbol (number->string n)))
 (define (ls-of l e) (build-list l (λ (x) e)))
+(define (sub-list l s e) (drop (take l e) s))
 
 (define (dict-filter p d)
   (cond ((dict-empty? d) d)
